@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Happy New Year</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100svh;
+            font-family: 'Mali', cursive;
+            background: linear-gradient(135deg,
+                    #FFAFCC,
+                    #BDE0FE,
+                    #CDB4F5,
+                    #FFC8DD);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #5a3a6e;
+        }
+
+        /* ===== Phone ===== */
+        .phone {
+            width: 380px;
+            height: 700px;
+            border-radius: 36px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===== PNG Overlay ===== */
+        .overlay-img {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            pointer-events: none;
+            opacity: 0.35;
+            z-index: 0;
+        }
+
+        .phone>*:not(.overlay-img) {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .header h2 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #5a3a6e;
+        }
+
+        /* ===== Chat ===== */
+        .chat {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ===== Chat Row ===== */
+        .chat-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        /* ===== Avatar ===== */
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+
+        /* ===== Bubble ===== */
+        .bubble {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 12px 16px;
+            border-radius: 18px 18px 18px 6px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            max-width: 260px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            animation: fadeUp 0.4s ease forwards;
+            color: #5a3a6e;
+        }
+
+        /* ===== Cards ===== */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            justify-items: center;
+            margin-top: 6px;
+        }
+
+        .card {
+            width: 80px;
+            height: 108px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 28px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card.opened {
+            background: linear-gradient(180deg, #fff, #fff6f0);
+            cursor: default;
+        }
+
+        /* ===== Footer Button (a) ===== */
+        .next-btn {
+            display: none;
+            width: 100%;
+            padding: 13px 0;
+            border-radius: 999px;
+            text-align: center;
+            text-decoration: none;
+
+            font-family: 'Mali', cursive;
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #5a3a6e;
+            background: linear-gradient(135deg,
+                    #FFAFCC,
+                    #FFC8DD,
+                    #BDE0FE);
+            transition: transform 0.2s ease;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .next-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ===== Scrollbar ===== */
+        .chat::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat::-webkit-scrollbar-thumb {
+            background: rgba(255, 175, 204, 0.45);
+            border-radius: 999px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== ≤ 360px (มือถือจอเล็กมาก) ===== */
+        @media (max-width: 360px) {
+            .phone {
+                transform: scale(0.9);
+                transform-origin: center;
+            }
+
+            .header h2 {
+                font-size: 15.5px;
+            }
+
+            .bubble {
+                font-size: 13.5px;
+                max-width: 220px;
+                padding: 10px 14px;
+            }
+
+            .avatar {
+                width: 30px;
+                height: 30px;
+            }
+
+            .card {
+                width: 64px;
+                height: 90px;
+                font-size: 24px;
+            }
+
+            .cards {
+                gap: 10px;
+            }
+
+            .next-btn {
+                font-size: 13px;
+            }
+        }
+
+        /* ===== 361px – 480px (มือถือทั่วไป) ===== */
+        @media (min-width: 361px) and (max-width: 480px) {
+            .phone {
+                transform: scale(1);
+            }
+
+            .bubble {
+                max-width: 240px;
+            }
+
+            .card {
+                width: 72px;
+                height: 100px;
+            }
+        }
+
+        /* ===== 481px – 599px (มือถือใหญ่ / tablet เล็ก) ===== */
+        @media (min-width: 481px) and (max-width: 599px) {
+            .phone {
+                transform: scale(1.05);
+            }
+
+            .header h2 {
+                font-size: 18px;
+            }
+
+            .bubble {
+                font-size: 15px;
+                max-width: 260px;
+            }
+
+            .card {
+                width: 82px;
+                height: 110px;
+                font-size: 30px;
+            }
+
+            .cards {
+                gap: 14px;
+            }
+        }
+
+        /* ===== 600px – 1024px (Tablet / iPad) ===== */
+        @media (min-width: 600px) and (max-width: 1024px) {
+            body {
+                padding: 32px;
+            }
+
+            .phone {
+                transform: scale(1.1);
+            }
+
+            .header h2 {
+                font-size: 19px;
+            }
+
+            .bubble {
+                font-size: 15.5px;
+                max-width: 280px;
+            }
+
+            .card {
+                width: 86px;
+                height: 116px;
+                font-size: 32px;
+            }
+
+            .next-btn {
+                font-size: 15px;
+            }
+        }
+
+        /* ===== Landscape มือถือ (แนวนอน) ===== */
+        @media (orientation: landscape) and (max-height: 420px) {
+            body {
+                align-items: flex-start;
+                padding-top: 8px;
+            }
+
+            .phone {
+                transform: scale(0.85);
+            }
+
+            .chat {
+                gap: 10px;
+            }
+
+            .cards {
+                gap: 10px;
+            }
+
+            .bubble {
+                font-size: 13.5px;
+            }
+        }
+
+        /* ===== iPhone X – iPhone 16 Pro (กันล้นขอบจริง) ===== */
+        @media (max-width: 430px) {
+            .phone {
+                max-width: calc(100vw - 32px);
+                transform: scale(0.96);
+            }
+        }
+
+        /* ===== Safe Area (Notch / Gesture Edge) ===== */
+        @supports (padding: env(safe-area-inset-left)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* ===== Reduce Motion (Accessibility) ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .card:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="phone">
+
+        <img src="img/doo.png" class="overlay-img">
+
+        <div class="header">
+            <h2>ไพ่เสริมดวง</h2>
+        </div>
+
+        <div class="chat" id="chat">
+
+            <div class="chat-row">
+                <img src="img/seer.png" class="avatar">
+                <div class="bubble">
+                    ลองเลือกไพ่ 1 ใบดูมั้ย
+                </div>
+            </div>
+
+            <div class="cards">
+                <div class="card">🔮</div>
+                <div class="card">🔮</div>
+                <div class="card">🔮</div>
+                <div class="card">🔮</div>
+                <div class="card">🔮</div>
+                <div class="card">🔮</div>
+            </div>
+
+        </div>
+
+        <a href="ending.html" class="next-btn" id="nextBtn">
+            สุดท้ายนี้
+        </a>
+
+    </div>
+
+    <script>
+        const fortunes = [
+            "ไพ่ The Lovers<br>ความรักที่สอดคล้องกันด้วยใจ<br>การตัดสินใจที่นำไปสู่ความสุขร่วมกัน",
+            "ไพ่ Two of Cups<br>ความสัมพันธ์ที่สมดุล<br>ให้และรับด้วยความเข้าใจ",
+            "ไพ่ Ten of Cups<br>ความสุขสมบูรณ์ทางหัวใจ<br>ความรักที่เติมเต็มชีวิต",
+            "ไพ่ The Empress<br>ความรักที่งอกงาม<br>เต็มไปด้วยความอบอุ่นและการดูแล",
+            "ไพ่ Knight of Cups<br>ความตั้งใจที่อ่อนโยนและจริงใจ<br>รักที่เดินหน้าอย่างมั่นคง",
+            "ไพ่ The Sun<br>พลังแห่งความสุขและความชัดเจน<br>ความรักสดใส เต็มไปด้วยรอยยิ้ม"
+        ];
+
+        const cards = document.querySelectorAll(".card");
+        const chat = document.getElementById("chat");
+        const nextBtn = document.getElementById("nextBtn");
+        let opened = false;
+
+        cards.forEach(card => {
+            card.addEventListener("click", () => {
+                if (opened) return;
+                opened = true;
+
+                card.classList.add("opened");
+                card.textContent = "💗";
+
+                const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+                setTimeout(() => {
+                    const row = document.createElement("div");
+                    row.className = "chat-row";
+
+                    const avatar = document.createElement("img");
+                    avatar.src = "img/seer.png";
+                    avatar.className = "avatar";
+
+                    const bubble = document.createElement("div");
+                    bubble.className = "bubble";
+                    bubble.innerHTML = fortune;
+
+                    row.appendChild(avatar);
+                    row.appendChild(bubble);
+                    chat.appendChild(row);
+
+                    chat.scrollTop = chat.scrollHeight;
+                    nextBtn.style.display = "block";
+                }, 600);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
